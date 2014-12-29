@@ -10,7 +10,9 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-  console.log('a user connected');
+  socket.on('pos', function(msg){
+    io.emit('pos', msg);
+  });
 });
 
 http.listen(3000, function(){
