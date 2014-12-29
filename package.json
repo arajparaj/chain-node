@@ -1,0 +1,8 @@
+{
+  "name": "chain-reaction",
+  "version": "0.0.1",
+  "description": "chain reaction",
+  "dependencies": {
+    "express": "^4.10.2"
+  }
+}
