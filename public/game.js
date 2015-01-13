@@ -1,16 +1,14 @@
-
-
 var socket = io();
 var context,canvas;
 var COLS=10;
 var ROWS=5;
-var box;
+var box,x,y;
 
 function clickHandler (e) {
 
 //identifies the clicked box
-	y = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
   	x = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+	y = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
   	x = Math.ceil(x/100);
   	y = Math.ceil(y/100);
 
@@ -56,13 +54,13 @@ function updatecanvas(){
     context.textBaseline = "top";
     for(var i=1;i<=ROWS;i++){
         for(var j=1;j<=COLS;j++){
-            context.fillText(box[i][j].atoms, 50+(j-1)*100, 50+(i-1)*100);
+            context.fillText(box[i][j].capacity, 50+(j-1)*100, 50+(i-1)*100);
 //            console.log(i,j);
         }
     }
 }
 
-function initGrid(){
+function createGrid(){
 
 //grid options
     var opts = {
@@ -75,13 +73,18 @@ function initGrid(){
     new Grid(opts).draw(context);
 
 }
+function updateBox(){
+//update the box state
+
+}
+
 function init(){
 
 //var declarations
     canvas = document.getElementById("gamebox");
     context = canvas.getContext("2d");
 
-    initGrid();
+    createGrid();
 //add an event listener to the canvas
     canvas.addEventListener("click",clickHandler);
     initGameBox();
@@ -90,11 +93,12 @@ function init(){
 
 
 socket.on('pos', function(msg){
-    console.log("clicked pos",msg.xc,msg.yc);
-//IMPORTANT userID
+//    console.log("clicked pos",msg.xc,msg.yc);
+//IMPORTANT user ID
     box[msg.xc][msg.yc].atoms++;
+//resetting the canvas for update
     context.clearRect(0, 0, canvas.width, canvas.height);
-    initGrid();
+    createGrid();
     updatecanvas();
 });
 
